@@ -13,14 +13,18 @@ async def all_jobs() -> Response:
 
 @router.get("/job/{job_name}")
 async def get_job(job_name: str) -> Response:
-    job = config.jobs[job_name]
-    return job
+    if job_name not in config.jobs:
+        return {"error": "job not found"}
+
+    return config.jobs[job_name]
 
 
 @router.post("/start/{job_name}")
 async def start_job(job_name: str) -> Response:
-    if not (job := config.jobs[job_name]):
+    if job_name not in config.jobs:
         return {"error": "job not found"}
+
+    job = config.jobs[job_name]
 
     if job.status == JobStatus.IN_PROGRESS:
         return {"error": "job already in progress."}
