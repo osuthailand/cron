@@ -1,0 +1,2 @@
+# cron
+If anything fucks up on the server, this is what saves the server:tm:. This cron is designed to be controllable from the admin panel, discord and other places. This means you can start, stop, and alter cron jobs.
