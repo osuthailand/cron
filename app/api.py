@@ -22,7 +22,7 @@ async def get_current_user(
 
     try:
         payload: dict[str, Any] = jwt.decode(
-            token, os.getenv("SECRET_KEY"), algorithms=["HS256"]
+            token, os.getenv("JWT_SECRET_KEY"), algorithms=["HS256"]
         )
     except jwt.InvalidTokenError:
         raise HTTPException(401, {"error": "could not validate jwt token"})
