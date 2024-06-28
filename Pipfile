@@ -9,6 +9,7 @@ databases = {extras = ["aiomysql"], version = "*"}
 redis = "*"
 numpy = "*"
 uvloop = "*"
+pyjwt = "*"
 
 [dev-packages]
 
