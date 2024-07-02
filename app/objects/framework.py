@@ -19,9 +19,9 @@ class Job(BaseModel):
     name: str
     interval: int
     is_controllable: bool
-    # ^^^^ if `is_controllable` is enabled then 
-    # the cron won't run it periodically and 
-    # requires it to be manually activated 
+    # ^^^^ if `is_controllable` is enabled then
+    # the cron won't run it periodically and
+    # requires it to be manually activated
 
     callback: Callable = Field(exclude=True)
     status: JobStatus = JobStatus.IDLE
@@ -32,13 +32,17 @@ class JobFramework:
     def __init__(self) -> None:
         self.jobs: dict[str, Job] = {}
 
-        self.database = Database(f"mysql+aiomysql://{os.getenv("DB_NAME")}:{os.getenv("DB_PASSWORD")}@localhost/{os.getenv("DB_DATABASE")}")
-        self.redis = aioredis.from_url(f"redis://{os.getenv("REDIS_NAME")}:{os.getenv("REDIS_PASSWORD")}@{os.getenv("REDIS_HOST")}:{os.getenv("REDIS_PORT")}")
+        self.database = Database(
+            f"mysql+aiomysql://{os.getenv("DB_NAME")}:{os.getenv("DB_PASSWORD")}@localhost/{os.getenv("DB_DATABASE")}"
+        )
+        self.redis = aioredis.from_url(
+            f"redis://{os.getenv("REDIS_NAME")}:{os.getenv("REDIS_PASSWORD")}@{os.getenv("REDIS_HOST")}:{os.getenv("REDIS_PORT")}"
+        )
 
     async def start(self) -> None:
         await self.database.connect()
         await self.redis.initialize()
-        
+
         asyncio.create_task(self.watch())
 
     def register(

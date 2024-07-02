@@ -22,7 +22,7 @@ async def get_current_user(
 
     try:
         payload: dict[str, Any] = jwt.decode(
-            token, os.getenv("JWT_SECRET_KEY"), algorithms=["HS256"]
+            token, os.getenv("JWT_SECRET_KEY"), algorithms=["HS256"]  # type: ignore
         )
     except jwt.InvalidTokenError:
         raise HTTPException(401, {"error": "could not validate jwt token"})
@@ -45,12 +45,12 @@ async def get_current_user(
 
 
 @router.get("/")
-async def all_jobs(_=Depends(get_current_user)) -> Response:
+async def all_jobs(_=Depends(get_current_user)):
     return config.jobs
 
 
 @router.get("/job/{job_name}")
-async def get_job(job_name: str, _=Depends(get_current_user)) -> Response:
+async def get_job(job_name: str, _=Depends(get_current_user)):
     if job_name not in config.jobs:
         return {"error": "job not found"}
 
@@ -58,7 +58,7 @@ async def get_job(job_name: str, _=Depends(get_current_user)) -> Response:
 
 
 @router.post("/start/{job_name}")
-async def start_job(job_name: str, _=Depends(get_current_user)) -> Response:
+async def start_job(job_name: str, _=Depends(get_current_user)):
     if job_name not in config.jobs:
         return {"error": "job not found"}
 

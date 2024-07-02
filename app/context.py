@@ -6,12 +6,10 @@ from fastapi.datastructures import State
 class CState(State):
     def __init__(self):
         super().__init__()
-
-    @property
-    def database(self) -> Database: ...
+        self.database: Database
 
 
 class CRequest(Request):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(*args)
         self.state: CState = CState()
