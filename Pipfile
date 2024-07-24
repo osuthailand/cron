@@ -10,6 +10,7 @@ redis = "*"
 numpy = "*"
 uvloop = "*"
 pyjwt = "*"
+aiohttp = "*"
 
 [dev-packages]
 
